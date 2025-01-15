@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CompanyCreatedEvent;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use App\Repositories\CompanyRepository;
@@ -47,7 +48,9 @@ class CompanyController extends Controller
     public function store(CompanyRequest $request)
     {
         $logoHashName = $this->logoService->upload($request->file('logo'), null);
-        $this->companyRepository->store($request->validated(), $logoHashName);
+        $company = $this->companyRepository->store($request->validated(), $logoHashName);
+
+        event(new CompanyCreatedEvent($company));
 
         return redirect()->route('company.index')->with('success', 'Company Store');
     }

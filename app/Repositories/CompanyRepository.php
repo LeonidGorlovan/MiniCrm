@@ -44,7 +44,7 @@ class CompanyRepository
         return Company::query()->find($id);
     }
 
-    public function store(array $validated, string|null $logoHashName): void
+    public function store(array $validated, string|null $logoHashName): array|null|Builder|Collection|Model
     {
         $data = [
             'name' => $validated['name'],
@@ -57,7 +57,9 @@ class CompanyRepository
             $data['logo'] = $logoHashName;
         }
 
-        Company::query()->insert($data);
+        $companyId = Company::query()->insertGetId($data);
+
+        return $this->one($companyId);
     }
 
     public function update(int $id, array $validated, string|null $logoHashName): void
