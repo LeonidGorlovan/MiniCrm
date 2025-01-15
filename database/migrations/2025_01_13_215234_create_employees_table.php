@@ -17,10 +17,10 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('first_name', 32);
+            $table->string('last_name', 32);
             $table->string('email')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('phone', 32)->nullable();
             $table->timestamps();
         });
     }
